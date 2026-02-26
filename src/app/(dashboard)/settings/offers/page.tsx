@@ -32,6 +32,7 @@ export default function OfferSettingsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -53,13 +54,20 @@ export default function OfferSettingsPage() {
 
   async function handleSave() {
     setSaving(true);
+    setSaveError(false);
     try {
-      await fetch("/api/settings", {
+      const res = await fetch("/api/settings", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
-      setSaved(true);
+      if (res.ok) {
+        setSaved(true);
+      } else {
+        setSaveError(true);
+      }
+    } catch {
+      setSaveError(true);
     } finally {
       setSaving(false);
     }
@@ -195,7 +203,7 @@ export default function OfferSettingsPage() {
       <div className="mt-4 flex justify-end">
         <Button onClick={handleSave} disabled={saving}>
           <Save className="h-4 w-4 mr-2" />
-          {saving ? "Αποθήκευση..." : saved ? "Αποθηκεύτηκε ✓" : "Αποθήκευση"}
+          {saving ? "Αποθήκευση..." : saveError ? "Σφάλμα αποθήκευσης" : saved ? "Αποθηκεύτηκε ✓" : "Αποθήκευση"}
         </Button>
       </div>
     </div>

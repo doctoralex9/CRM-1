@@ -180,7 +180,7 @@ model OfferNumberSequence {
 // -----------------------------------------------------------------------------
 
 model AppSettings {
-  id    String @id @default("default")
+  id    String @id @default(cuid())
   key   String @unique
   value String
 
