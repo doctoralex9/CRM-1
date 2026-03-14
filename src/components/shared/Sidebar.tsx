@@ -4,6 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Building2, FileText, Home, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useRouter} from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import { LogOut } from "lucide-react";
 
 const navigation = [
   { name: "Αρχική", href: "/", icon: Home },
@@ -14,6 +17,13 @@ const navigation = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter()
+  const supabase = createClient()
+
+  async function handleLogout() {
+    await supabase.auth.signOut()
+    router.push("/login")
+  }
 
   return (
     <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
@@ -56,6 +66,15 @@ export function Sidebar() {
             );
           })}
         </nav>
+
+        <div className="px-3 pb-2">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg w-full text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+            <LogOut className="h-5 w-5 text-gray-400" />
+            Αποσύνδεση  
+          </button>
+        </div>
 
         {/* Company Info */}
         <div className="px-4 py-3 border-t border-gray-200">
