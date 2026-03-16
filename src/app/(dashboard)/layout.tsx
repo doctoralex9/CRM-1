@@ -6,6 +6,8 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const user = await supabase.auth.getUser();
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Sidebar />
