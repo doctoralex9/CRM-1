@@ -9,6 +9,7 @@ export default function LoginPage() {
   const supabase = createClient()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [rememberMe, setRememberMe] = useState(false)
   const [error, setError] = useState("")
 
   async function handleLogin(e: React.FormEvent) {
@@ -20,6 +21,16 @@ export default function LoginPage() {
     if (error) {
       setError("Λάθος email ή κωδικός")
       return
+    }
+
+    // Store preference and set session marker cookie
+    localStorage.setItem("rememberMe", rememberMe ? "true" : "false")
+    if (!rememberMe) {
+      // Session cookie (no expires) — browser deletes it when closed
+      document.cookie = "crm_session=active; path=/; SameSite=Lax"
+    } else {
+      // Clear any leftover session cookie
+      document.cookie = "crm_session=; path=/; SameSite=Lax; Max-Age=0"
     }
 
     router.push("/")
@@ -45,6 +56,15 @@ export default function LoginPage() {
           onChange={e => setPassword(e.target.value)}
           className="border p-2 rounded"
         />
+        <label className="flex items-center gap-2 text-sm cursor-pointer">
+          <input
+            type="checkbox"
+            checked={rememberMe}
+            onChange={e => setRememberMe(e.target.checked)}
+            className="w-4 h-4 rounded border-gray-300"
+          />
+          Να με θυμάσαι
+        </label>
         <button type="submit" className="bg-black text-white p-2 rounded">
           Σύνδεση
         </button>

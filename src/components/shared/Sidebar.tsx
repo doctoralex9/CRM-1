@@ -21,6 +21,8 @@ export function Sidebar() {
   const supabase = createClient()
 
   async function handleLogout() {
+    localStorage.removeItem("rememberMe")
+    document.cookie = "crm_session=; path=/; SameSite=Lax; Max-Age=0"
     await supabase.auth.signOut()
     router.push("/login")
   }

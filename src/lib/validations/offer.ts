@@ -38,7 +38,7 @@ export type OfferFormData = z.infer<typeof offerSchema>;
 // Status update validation
 export const offerStatusSchema = z.object({
   status: z.enum(["draft", "sent", "accepted", "rejected", "expired"], {
-    required_error: "Επιλέξτε κατάσταση",
+    error: "Επιλέξτε κατάσταση",
   }),
 });
 

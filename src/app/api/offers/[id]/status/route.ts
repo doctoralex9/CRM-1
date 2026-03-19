@@ -5,11 +5,13 @@ import { offerStatusSchema } from "@/lib/validations/offer";
 // PATCH /api/offers/[id]/status - Update offer status
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
+
     const existing = await prisma.offer.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!existing) {
@@ -50,7 +52,7 @@ export async function PATCH(
     }
 
     const offer = await prisma.offer.update({
-      where: { id: params.id },
+      where: { id },
       data: { status: status as any },
       include: {
         customer: true,

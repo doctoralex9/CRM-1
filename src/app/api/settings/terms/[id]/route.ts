@@ -4,21 +4,22 @@ import prisma from "@/lib/prisma";
 // PUT /api/settings/terms/[id] - Update clause template
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const body = await request.json();
     const { title, clauseText, isDefault, isActive, sortOrder } = body;
 
     const existing = await prisma.termsClauseTemplate.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
     if (!existing) {
       return NextResponse.json({ error: "Δεν βρέθηκε" }, { status: 404 });
     }
 
     const updated = await prisma.termsClauseTemplate.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         ...(title !== undefined && { title: title.trim() }),
         ...(clauseText !== undefined && { clauseText: clauseText.trim() }),
@@ -41,12 +42,14 @@ export async function PUT(
 // DELETE /api/settings/terms/[id] - Delete clause template
 export async function DELETE(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
+
     // Check if used in any offer
     const used = await prisma.offerSelectedClause.count({
-      where: { clauseTemplateId: params.id },
+      where: { clauseTemplateId: id },
     });
     if (used > 0) {
       return NextResponse.json(
@@ -55,7 +58,7 @@ export async function DELETE(
       );
     }
 
-    await prisma.termsClauseTemplate.delete({ where: { id: params.id } });
+    await prisma.termsClauseTemplate.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("DELETE /api/settings/terms/[id] error:", error);

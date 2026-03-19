@@ -1,5 +1,6 @@
 import { Sidebar } from "@/components/shared/Sidebar";
 import { MobileNav } from "@/components/shared/MobileNav";
+import SessionGuard from "@/components/shared/SessionGuard";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function DashboardLayout({
@@ -12,6 +13,7 @@ export default async function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SessionGuard />
       <Sidebar />
       <MobileNav />
 

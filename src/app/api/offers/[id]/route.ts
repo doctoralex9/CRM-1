@@ -6,11 +6,12 @@ import { calculateLineTotal, calculateOfferTotals } from "@/lib/utils";
 // GET /api/offers/[id] - Get single offer with relations
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const offer = await prisma.offer.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         customer: true,
         lineItems: { orderBy: { sortOrder: "asc" } },
@@ -41,12 +42,14 @@ export async function GET(
 // PUT /api/offers/[id] - Update offer (only draft offers)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
+
     // Check offer exists
     const existing = await prisma.offer.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!existing) {
@@ -98,12 +101,12 @@ export async function PUT(
     const offer = await prisma.$transaction(async (tx) => {
       // Delete existing line items
       await tx.offerLineItem.deleteMany({
-        where: { offerId: params.id },
+        where: { offerId: id },
       });
 
       // Update offer with new line items
       const updated = await tx.offer.update({
-        where: { id: params.id },
+        where: { id },
         data: {
           customerId: data.customerId,
           title: data.title,
@@ -145,11 +148,13 @@ export async function PUT(
 // DELETE /api/offers/[id] - Delete offer (only draft)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
+
     const existing = await prisma.offer.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!existing) {
@@ -167,7 +172,7 @@ export async function DELETE(
     }
 
     await prisma.offer.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json({ data: { success: true } });

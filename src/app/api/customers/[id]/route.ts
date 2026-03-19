@@ -5,11 +5,12 @@ import { customerSchema } from "@/lib/validations/customer";
 // GET /api/customers/:id - Get single customer with offers
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const customer = await prisma.customer.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         offers: {
           orderBy: { createdAt: "desc" },
@@ -39,14 +40,15 @@ export async function GET(
 // PUT /api/customers/:id - Update customer
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const body = await request.json();
 
     // Check exists
     const existing = await prisma.customer.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
     if (!existing) {
       return NextResponse.json(
@@ -71,7 +73,7 @@ export async function PUT(
       const vatConflict = await prisma.customer.findFirst({
         where: {
           vatNumber: data.vatNumber,
-          NOT: { id: params.id },
+          NOT: { id },
         },
       });
       if (vatConflict) {
@@ -84,7 +86,7 @@ export async function PUT(
 
     // Update
     const customer = await prisma.customer.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         customerType: data.customerType,
         companyName: data.companyName || null,
@@ -114,12 +116,13 @@ export async function PUT(
 // DELETE /api/customers/:id - Delete customer
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     // Check if customer has offers
     const customer = await prisma.customer.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: { _count: { select: { offers: true } } },
     });
 
@@ -138,7 +141,7 @@ export async function DELETE(
     }
 
     await prisma.customer.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json({ success: true });
