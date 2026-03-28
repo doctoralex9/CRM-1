@@ -3,6 +3,14 @@ import prisma from "@/lib/prisma";
 import { customerSchema } from "@/lib/validations/customer";
 import { Prisma } from "@prisma/client";
 
+const ALLOWED_CUSTOMER_SORT_FIELDS = [
+  "createdAt", "updatedAt", "companyName", "firstName", "lastName", "vatNumber", "customerType",
+] as const;
+type CustomerSortField = typeof ALLOWED_CUSTOMER_SORT_FIELDS[number];
+
+const ALLOWED_SORT_ORDERS = ["asc", "desc"] as const;
+type SortOrder = typeof ALLOWED_SORT_ORDERS[number];
+
 // GET /api/customers - List customers with search, filter, pagination
 export async function GET(request: NextRequest) {
   try {
@@ -11,8 +19,14 @@ export async function GET(request: NextRequest) {
     const type = searchParams.get("type") || "all";
     const page = parseInt(searchParams.get("page") || "1");
     const pageSize = parseInt(searchParams.get("pageSize") || "20");
-    const sortBy = searchParams.get("sortBy") || "createdAt";
-    const sortOrder = searchParams.get("sortOrder") || "desc";
+    const sortByRaw = searchParams.get("sortBy") || "createdAt";
+    const sortOrderRaw = searchParams.get("sortOrder") || "desc";
+    const sortBy: CustomerSortField = (ALLOWED_CUSTOMER_SORT_FIELDS as readonly string[]).includes(sortByRaw)
+      ? (sortByRaw as CustomerSortField)
+      : "createdAt";
+    const sortOrder: SortOrder = (ALLOWED_SORT_ORDERS as readonly string[]).includes(sortOrderRaw)
+      ? (sortOrderRaw as SortOrder)
+      : "desc";
 
     // Build where clause
     const where: Prisma.CustomerWhereInput = {};

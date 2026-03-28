@@ -1,8 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { offerSchema } from "@/lib/validations/offer";
-import { Prisma } from "@prisma/client";
+import { Prisma, OfferStatus } from "@prisma/client";
 import { generateOfferNumber, calculateLineTotal, calculateOfferTotals } from "@/lib/utils";
+
+const ALLOWED_OFFER_SORT_FIELDS = [
+  "createdAt", "updatedAt", "offerDate", "offerNumber", "status", "total",
+] as const;
+type OfferSortField = typeof ALLOWED_OFFER_SORT_FIELDS[number];
+
+const ALLOWED_SORT_ORDERS = ["asc", "desc"] as const;
+type SortOrder = typeof ALLOWED_SORT_ORDERS[number];
+
+const ALLOWED_OFFER_STATUSES = [
+  "draft", "sent", "accepted", "rejected", "cancelled",
+] as const;
 
 // GET /api/offers - List offers with search, filter, pagination
 export async function GET(request: NextRequest) {
@@ -13,14 +25,23 @@ export async function GET(request: NextRequest) {
     const customerId = searchParams.get("customerId") || "";
     const page = parseInt(searchParams.get("page") || "1");
     const pageSize = parseInt(searchParams.get("pageSize") || "20");
-    const sortBy = searchParams.get("sortBy") || "createdAt";
-    const sortOrder = searchParams.get("sortOrder") || "desc";
+    const sortByRaw = searchParams.get("sortBy") || "createdAt";
+    const sortOrderRaw = searchParams.get("sortOrder") || "desc";
+    const sortBy: OfferSortField = (ALLOWED_OFFER_SORT_FIELDS as readonly string[]).includes(sortByRaw)
+      ? (sortByRaw as OfferSortField)
+      : "createdAt";
+    const sortOrder: SortOrder = (ALLOWED_SORT_ORDERS as readonly string[]).includes(sortOrderRaw)
+      ? (sortOrderRaw as SortOrder)
+      : "desc";
 
     // Build where clause
     const where: Prisma.OfferWhereInput = {};
 
     if (status !== "all") {
-      where.status = status as any;
+      if (!(ALLOWED_OFFER_STATUSES as readonly string[]).includes(status)) {
+        return NextResponse.json({ error: "Μη έγκυρη κατάσταση" }, { status: 400 });
+      }
+      where.status = status as OfferStatus;
     }
 
     if (customerId) {
@@ -97,20 +118,14 @@ export async function POST(request: NextRequest) {
     const offer = await prisma.$transaction(async (tx) => {
       // Get and increment the sequence for current year
       const year = new Date(data.offerDate).getFullYear();
+      // upsert returns the already-incremented row, so lastNumber is the new value
       const sequence = await tx.offerNumberSequence.upsert({
         where: { year },
         update: { lastNumber: { increment: 1 } },
         create: { year, lastNumber: 1 },
       });
 
-      const offerNumber = generateOfferNumber(year, sequence.lastNumber + 1);
-
-      // Re-read to get the actual incremented value
-      const updatedSeq = await tx.offerNumberSequence.findUnique({
-        where: { year },
-      });
-
-      const finalOfferNumber = generateOfferNumber(year, updatedSeq!.lastNumber);
+      const finalOfferNumber = generateOfferNumber(year, sequence.lastNumber);
 
       // Calculate line totals and offer totals
       const lineItemsWithTotals = data.lineItems.map((item, index) => ({
