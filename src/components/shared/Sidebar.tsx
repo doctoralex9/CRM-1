@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Building2, FileText, Home, Settings } from "lucide-react";
+import { BookUser, FileText, Home, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRouter} from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -10,8 +10,8 @@ import { LogOut } from "lucide-react";
 
 const navigation = [
   { name: "Αρχική", href: "/", icon: Home },
-  { name: "Πελάτες", href: "/customers", icon: Building2 },
-  { name: "Προσφορές", href: "/offers", icon: FileText },
+  { name: "Πελάτες", href: "/customers", icon: BookUser },
+  { name: "Προσφορές", href: "/offers", icon: FileText},
   { name: "Ρυθμίσεις", href: "/settings", icon: Settings },
 ];
 
