@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Building2, FileText, Settings } from "lucide-react";
+import { BookUser, FileText, Settings } from "lucide-react";
 import { resolve } from "path";
 
 export default async function Home() {
@@ -26,7 +26,7 @@ export default async function Home() {
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-blue-100 rounded-lg">
-                <Building2 className="h-6 w-6 text-blue-600" />
+                <BookUser size={36} color="#27915a" absoluteStrokeWidth />
               </div>
               <div>
                 <p className="text-sm text-gray-500">Πελάτες</p>
@@ -66,7 +66,7 @@ export default async function Home() {
             href="/customers"
             className="bg-white rounded-xl shadow-sm p-8 border border-gray-100 hover:shadow-md hover:border-blue-200 transition-all group"
           >
-            <Building2 className="h-10 w-10 text-blue-600 mb-4 group-hover:scale-110 transition-transform" />
+            <BookUser size={36} color="#27915a" absoluteStrokeWidth />
             <h2 className="text-xl font-semibold text-gray-900 mb-2">Πελάτες</h2>
             <p className="text-gray-600">Διαχείριση πελατών, εταιρειών και ιδιωτών</p>
           </Link>

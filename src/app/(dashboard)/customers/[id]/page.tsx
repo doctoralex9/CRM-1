@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
-  Building2,
+  BookUser,
   User,
   Phone,
   Mail,
@@ -127,7 +127,7 @@ export default function CustomerDetailPage() {
                 )}
               >
                 {customer.customerType === "company" ? (
-                  <Building2 className="h-6 w-6 text-blue-600" />
+                  <BookUser className="h-6 w-6 text-blue-600" />
                 ) : (
                   <User className="h-6 w-6 text-green-600" />
                 )}

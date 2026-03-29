@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Building2, User } from "lucide-react";
+import { BookUser, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -104,12 +104,7 @@ export function CustomerForm({ initialData, mode }: CustomerFormProps) {
                 : "border-gray-200 hover:border-gray-300"
             )}
           >
-            <Building2
-              className={cn(
-                "h-5 w-5",
-                customerType === "company" ? "text-blue-600" : "text-gray-400"
-              )}
-            />
+            <BookUser size={36} color="#27915a" absoluteStrokeWidth />
             <span
               className={cn(
                 "font-medium",

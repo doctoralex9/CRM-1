@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Plus, Search, Building2, User } from "lucide-react";
+import { Plus, Search, BookUser, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PageHeader } from "@/components/shared/PageHeader";
@@ -173,7 +173,7 @@ export default function CustomersPage() {
                             )}
                           >
                             {customer.customerType === "company" ? (
-                              <Building2 className="h-4 w-4 text-blue-600" />
+                              <BookUser className="h-4 w-4 text-blue-600" />
                             ) : (
                               <User className="h-4 w-4 text-green-600" />
                             )}
