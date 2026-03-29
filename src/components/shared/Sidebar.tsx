@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookUser, FileText, Home, Settings } from "lucide-react";
+import { BookUser, TicketPercent, Home, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRouter} from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -11,7 +11,7 @@ import { LogOut } from "lucide-react";
 const navigation = [
   { name: "Αρχική", href: "/", icon: Home },
   { name: "Πελάτες", href: "/customers", icon: BookUser },
-  { name: "Προσφορές", href: "/offers", icon: FileText},
+  { name: "Προσφορές", href: "/offers", icon: TicketPercent},
   { name: "Ρυθμίσεις", href: "/settings", icon: Settings },
 ];
 
@@ -58,11 +58,11 @@ export function Sidebar() {
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors",
                   isActive
-                    ? "bg-blue-50 text-blue-700"
+                    ? "bg-blue-50 text-green-600"
                     : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                 )}
               >
-                <item.icon className={cn("h-5 w-5", isActive ? "text-blue-600" : "text-gray-400")} />
+                <item.icon className={cn("h-5 w-5", isActive ? "text-green-600" : "text-gray-400")} />
                 {item.name}
               </Link>
             );

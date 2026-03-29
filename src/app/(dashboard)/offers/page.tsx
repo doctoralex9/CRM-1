@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Plus, Search, FileText } from "lucide-react";
+import { Plus, Search, TicketPercent } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PageHeader } from "@/components/shared/PageHeader";
@@ -155,7 +155,7 @@ export default function OffersPage() {
               ) : offers.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="px-4 py-12 text-center text-gray-500">
-                    <FileText className="h-8 w-8 mx-auto mb-2 text-gray-300" />
+                    <TicketPercent className="h-8 w-8 mx-auto mb-2 text-gray-300" />
                     {search
                       ? "Δεν βρέθηκαν αποτελέσματα"
                       : "Δεν υπάρχουν προσφορές"}

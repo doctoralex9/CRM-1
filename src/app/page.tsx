@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookUser, FileText, Settings } from "lucide-react";
+import { BookUser, TicketPercent, Settings } from "lucide-react";
 import { resolve } from "path";
 
 export default async function Home() {
@@ -38,7 +38,7 @@ export default async function Home() {
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-green-100 rounded-lg">
-                <FileText className="h-6 w-6 text-green-600" />
+                <TicketPercent className="h-6 w-6 text-green-600" />
               </div>
               <div>
                 <p className="text-sm text-gray-500">Προσφορές</p>
@@ -50,7 +50,7 @@ export default async function Home() {
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-purple-100 rounded-lg">
-                <FileText className="h-6 w-6 text-purple-600" />
+                <TicketPercent className="h-6 w-6 text-purple-600" />
               </div>
               <div>
                 <p className="text-sm text-gray-500">Αποδεκτές</p>
@@ -75,7 +75,7 @@ export default async function Home() {
             href="/offers"
             className="bg-white rounded-xl shadow-sm p-8 border border-gray-100 hover:shadow-md hover:border-green-200 transition-all group"
           >
-            <FileText className="h-10 w-10 text-green-600 mb-4 group-hover:scale-110 transition-transform" />
+            <TicketPercent size={36} color="#27915a" absoluteStrokeWidth />
             <h2 className="text-xl font-semibold text-gray-900 mb-2">Προσφορές</h2>
             <p className="text-gray-600">Δημιουργία και παρακολούθηση προσφορών</p>
           </Link>
