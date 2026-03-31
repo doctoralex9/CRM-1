@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookUser, TicketPercent, Settings } from "lucide-react";
+import { BookUser, TicketPercent, Settings, SquareCheck  } from "lucide-react";
 import { resolve } from "path";
 
 export default async function Home() {
@@ -49,8 +49,8 @@ export default async function Home() {
 
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <div className="flex items-center gap-4">
-              <div className="p-3 bg-purple-100 rounded-lg">
-                <TicketPercent className="h-6 w-6 text-purple-600" />
+              <div className="p-3 bg-green-100 rounded-lg">
+                <SquareCheck className="h-6 w-6 text-green-600" />
               </div>
               <div>
                 <p className="text-sm text-gray-500">Αποδεκτές</p>
