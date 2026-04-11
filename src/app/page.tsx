@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookUser, TicketPercent, Settings, SquareCheck  } from "lucide-react";
+import { BookUser, TicketPercent, Cog, SquareCheck  } from "lucide-react";
 import { resolve } from "path";
 
 export default async function Home() {
@@ -13,10 +13,10 @@ export default async function Home() {
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl font-bold mb-4" style={{ color: "#27915a" }}>
             CRM - Επισκευή Αντλιών Πλοίων
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg" style={{ color: "#27915a" }}>
             Σύστημα διαχείρισης πελατών και προσφορών
           </p>
         </div>
@@ -84,7 +84,7 @@ export default async function Home() {
             href="/settings"
             className="bg-white rounded-xl shadow-sm p-8 border border-gray-100 hover:shadow-md hover:border-purple-200 transition-all group"
           >
-            <Settings className="h-10 w-10 text-purple-600 mb-4 group-hover:scale-110 transition-transform" />
+            <Cog size={36} color="#27915a" absoluteStrokeWidth />
             <h2 className="text-xl font-semibold text-gray-900 mb-2">Ρυθμίσεις</h2>
             <p className="text-gray-600">Διαχείριση όρων και προτύπων</p>
           </Link>

@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookUser, TicketPercent, Home, Settings } from "lucide-react";
+import { BookUser, TicketPercent, Home, Cog } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navigation = [
   { name: "Αρχική", href: "/", icon: Home },
   { name: "Πελάτες", href: "/customers", icon: BookUser },
   { name: "Προσφορές", href: "/offers", icon: TicketPercent },
-  { name: "Ρυθμίσεις", href: "/settings", icon: Settings },
+  { name: "Ρυθμίσεις", href: "/settings", icon: Cog },
 ];
 
 export function MobileNav() {
