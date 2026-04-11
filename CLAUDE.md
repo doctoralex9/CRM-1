@@ -70,3 +70,6 @@ prisma/
 - [ ] PDF generation
 - [ ] Email sending (Resend)
 - [ ] Auth (Supabase Auth or NextAuth)
+- [ ] Fix colors inside Settings section
+- [ ] Security & auth tests
+- [ ] Functional end-to-end tests (run before final presentation)
